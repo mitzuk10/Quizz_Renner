@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Renner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="quiz-container">
+    <div id="quiz"></div>
+    <div class="result-card" id="result">
+      <h2>🎉 Obrigado pela sua participação!</h2>
+      <p id="score"></p>
+      <p id="redirect"></p>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "Qual é a principal tendência de moda para a temporada atual?",
+        options: ["Estilo minimalista", "Estampas florais", "Tecidos metálicos", "Cores neon"],
+        answer: 3
+      },
+      {
+        question: "A Renner faz parte de qual grupo empresarial?",
+        options: ["Grupo Lojas Americanas", "Grupo Guararapes", "Grupo B2W", "Grupo Pão de Açúcar"],
+        answer: 1
+      },
+      {
+        question: "Qual é o estilo de moda que mistura elementos vintage com peças contemporâneas?",
+        options: ["Retro Chic", "Minimalismo", "Streetwear", "Boho"],
+        answer: 0
+      },
+      {
+        question: "O que é o “Athleisure” na moda?",
+        options: ["Roupas exclusivamente para academia", "Combinação de roupas esportivas e casuais", "Estilo formal para o trabalho", "Moda de alta costura"],
+        answer: 1
+      },
+      {
+        question: "O que caracteriza o estilo “sustainable fashion”?",
+        options: ["Uso de materiais sintéticos", "Produção ética e eco-friendly", "Moda rápida e acessível", "Roupas de luxo"],
+        answer: 1
+      },
+      {
+        question: "Qual é a principal característica do estilo “streetwear”?",
+        options: ["Peças formais e elegantes", "Roupas inspiradas na cultura urbana e casual", "Moda minimalista", "Estilo tradicional e clássico"],
+        answer: 1
+      },
+      {
+        question: "Em que ano a Renner foi fundada?",
+        options: ["1919", "1947", "1965", "1980"],
+        answer: 1
+      },
+      {
+        question: "Qual é o principal foco da Renner em relação à sustentabilidade?",
+        options: ["Redução de resíduos e reciclagem", "Produção de tecidos sintéticos", "Expansão de lojas em shoppings", "Parcerias com marcas internacionais"],
+        answer: 0
+      },
+      {
+        question: "Qual é o nome do programa de fidelidade da Renner?",
+        options: ["Renner Club", "Clube de Vantagens", "Meu Renner", "Renner Plus"],
+        answer: 0
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    const resultContainer = document.getElementById("result");
+    const scoreText = document.getElementById("score");
+    const redirectText = document.getElementById("redirect");
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      quizContainer.innerHTML = "";
+      const q = quizData[currentQuestion];
+      const card = document.createElement("div");
+      card.classList.add("question-card", "active");
+
+      card.innerHTML = `
+        <h2>${currentQuestion + 1}) ${q.question}</h2>
+        ${q.options
+          .map(
+            (opt, i) =>
+              `<label><input type="radio" name="q${currentQuestion}" value="${i}"> ${opt}</label>`
+          )
+          .join("")}
+        <button onclick="nextQuestion()">Próxima</button>
+      `;
+
+      quizContainer.appendChild(card);
+    }
+
+    function nextQuestion() {
+      const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+      if (!selected) return alert("Selecione uma resposta antes de continuar!");
+      if (parseInt(selected.value) === quizData[currentQuestion].answer) score++;
+
+      currentQuestion++;
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      quizContainer.style.display = "none";
+      resultContainer.classList.add("active");
+      scoreText.innerHTML = `Você acertou <strong>${score}</strong> de ${quizData.length} perguntas!`;
+
+      if (score > 6) {
+        redirectText.innerHTML = `
+          🎁 Parabéns! Acesse o link abaixo:<br>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSepXooyh_I_E__0WA6IjLS1ELG5hhRSJIgZgIKgxPg7MldY2w/viewform?usp=header" target="_blank">
+            👉 Continuar para o formulário
+          </a>`;
+      } else {
+        redirectText.innerHTML = "😊 Obrigado por participar!";
+      }
+
+      localStorage.setItem("quizDone", "true");
+    }
+
+    // Evita que o quiz seja feito mais de uma vez
+    if (localStorage.getItem("quizDone") === "true") {
+      document.querySelector(".quiz-container").innerHTML = `
+        <div class="result-card active">
+          <h2>Você já respondeu este quiz!</h2>
+          <p>Obrigado pela sua participação 💖</p>
+        </div>`;
+    } else {
+      loadQuestion();
+    }
+  </script>
+</body>
+</html>

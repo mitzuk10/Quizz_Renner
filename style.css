@@ -1,0 +1,98 @@
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #ffe6eb, #fff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .quiz-container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .question-card {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.6s ease;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+    }
+
+    .question-card.active {
+      opacity: 1;
+      transform: translateX(0);
+      position: relative;
+    }
+
+    h2 {
+      color: #e60050;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      background: #f9f9f9;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #eee;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: left;
+    }
+
+    label:hover {
+      background: #ffe6eb;
+      border-color: #e60050;
+    }
+
+    button {
+      margin-top: 25px;
+      background: #e60050;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #c10044;
+    }
+
+    .result-card {
+      display: none;
+    }
+
+    .result-card.active {
+      display: block;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
